@@ -1,0 +1,172 @@
+
+% filter_coeff = zeros(1,219);
+% filter_coeff = filter123();
+
+
+%Generate data bits
+data=randomdatagenerator();
+
+% Modulation
+
+modulated_data=QAM_Modulator(data);
+
+
+%Mapped Pilot Generator
+
+
+pilot=zeros(300,140);
+pilot_col=1;
+ns=0;
+l=0;
+
+
+
+
+pilot=zeros(300,140);
+pilot_col=1;
+
+for ns=0:1:19
+   for l=0:1:6
+       [a,k]=pilot_generator(l,ns);
+        for index=1:length(k)
+            pilot(k(index),pilot_col)=a(index);
+        end 
+        pilot_col = pilot_col + 1;
+    end
+end
+
+
+% %Multiplexing
+ multiplexed_data=multiplexer(modulated_data,pilot);
+
+% Serial to Parallel
+parallel_data = serial_to_parallel(multiplexed_data);
+
+%Subcarrier Mapper
+subcarrier_mapper_output=Subcarrier_mapper(parallel_data);
+%subcarrier_mapper_output=ifftshift(subcarrier_mapper_output);
+
+%IFFT
+IFFT_data=ifft(subcarrier_mapper_output,512);
+
+%Adding Cyclic Prefix
+data_cp=Add_CP(IFFT_data);
+
+%Upsampling
+up_data=Upconverter(data_cp);
+
+%parallel to serial before Filtering
+%input_to_filter = parallel_to_serial_before_filter(up_data); 
+
+%Filtering
+output =[];
+tempoutput=[];
+
+for k = 1:1:140
+    tempoutput=conv(filter_coeff,up_data(:,k));
+    output(:,k)=tempoutput;
+end
+
+
+
+
+
+
+
+
+%Channel
+% t=1;
+% for snr=0:5:30
+%     
+%     channel_output = awgn(output_of_filter,snr);
+    
+output123 =[];
+tempoutput123=[];
+
+for k = 1:1:140
+    tempoutput123=conv(filter_coeff,output(:,k));
+    output123(:,k)=tempoutput123;
+end
+    %output_of_filter123 = conv(output_of_filter,filter_coeff,'same');
+   
+         
+
+
+
+    
+  output_clipper = clipper(output123);
+
+  %input_to_downconvertor = serial_to_parallel_before_downconvertor(output_of_filter123);
+   
+    Down_Symbol = downconvertor(output_clipper);
+
+%To remove CP
+OFDM_Rx_Symbol = Remove_CP(Down_Symbol);
+
+%DFT block in thhe receiver
+After_FFT = fft(OFDM_Rx_Symbol);
+
+%Subcarrier mapper block in rx
+Demapped_Data = Subcarrier_Demapper(After_FFT);
+
+%Demultiplexer
+Demultiplexed_Data = Demultiplexer(Demapped_Data);
+
+new_data = [];
+for i=1:1:length(Demultiplexed_Data)
+    rl = real(Demultiplexed_Data(i));
+    img = imag(Demultiplexed_Data(i));
+    if(0<rl<0.2 && 0<img<0.2 )
+        rl = 0.135;
+        img = 0.153;
+    elseif (0<rl<0.2 && img>0.2)
+        rl=0.135;
+        img=0.36;
+    elseif (rl>0.2 && 0<img<0.2)
+        rl=0.36;
+        img=0.135;
+    elseif (rl>0.2 && img>0.2)
+        rl=0.36;
+        img=0.36; 
+    elseif ((0<rl)&&(rl<0.2 )&& (0>img)(img>-0.2))
+        rl=0.135;
+        img=-0.135;     
+        
+    end
+    
+   
+    
+    new_data (i) = (rl+img*j);
+end
+
+r1=real(Demultiplexed_Data);
+img = imag(Demultiplexed_Data);
+scatter(r1,img);
+%Demodulator
+Rx_Bits = QAMdemod(new_data);
+
+counter =0;
+
+for m=1:1:160000
+    if(data(m)~=Rx_Bits(m))
+        counter=counter+1;
+    end
+end
+
+% error_bits=sum(xor(Rx_Bits,data)); 
+% ber(t)=error_bits/length(data); 
+% %display(ber);
+% t=t+1;
+% 
+% end
+
+% %Plot of SNR vs BER
+% SNR=0:5:30;
+% figure(12);
+% semilogy(SNR,ber);
+% %xlim([-5 15]);
+% xlabel('SNR_db');
+% ylabel('ber');
+
+
+
