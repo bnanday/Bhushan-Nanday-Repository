@@ -1,0 +1,32 @@
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+
+<html>
+    <!--
+    This is the form page which accepts the location in form of city,state
+    -->
+    <head>
+        <style type="text/css">
+            h1 {color: blue}
+            p{text-align:center}
+            
+            </style>
+        <title> Welcome to Open Weather Map</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    </head>
+    <body>
+        <h1 align ="center" >WELCOME TO THE WEATHER MASTER</h1> <br><br><br>
+        
+        
+        <p> Please Enter the Location in city,state format eg: Dulles,VA <br></p>
+    <center><form name="input" action="http://localhost:8080/Weather/NewServlet" method="post">
+     Location: <input type="text" name="user"> 
+               <input type="submit" value="Submit" align="center">
+</form>
+    </center>
+        
+    </body>
+</html>
