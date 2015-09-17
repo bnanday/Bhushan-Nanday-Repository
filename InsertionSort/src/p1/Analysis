@@ -1,0 +1,13 @@
+Best case = O(n)
+Worst case = O(n2)
+Average case = O(n2)
+
+Best case:
+
+Its best to use insertion sort when the array is almost or fully sorted and it makes less comparisons because the 
+while loop condition is false.
+
+Average case:
+
+On an average case for a random data only half of the maximum number of comparisons possible are made. Hence,
+it runs faster than bubble and selection sort for the random data.
