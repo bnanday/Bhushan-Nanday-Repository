@@ -62,6 +62,7 @@ public class Graph {
 	}
 	
 	int indexForName(String name) {
+		System.out.println("This is a branch");
 		for (int v=0; v < adjLists.length; v++) {
 			if (adjLists[v].name.equals(name)) {
 				return v;
