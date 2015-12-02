@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:util="http://www.springframework.org/schema/util"
+
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+          http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.2.xsd
+          http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.2.xsd
+">
+
+    
+    <bean id="levelTypes" class="auditorium.LevelTypes">
+        
+        <property name="levelTypes">
+            <list>
+                <value>orchestra</value>
+                <value>main</value>
+                <value>level1</value>
+                <value>level2</value>
+            </list>
+        </property>
+        
+            
+            
+        
+    </bean>
+    
+    <bean id="orchestra" class="auditorium.Level">
+        
+        <property name="name" value="orchestra"/>
+        <property name="levelId" value="1"/>
+        <property name="numRows" value="25"/>
+        <property name="numSeatsPerRow" value="50"/>
+        <property name="pricePerTicket" value="100"/>
+        
+    </bean>
+    
+    <bean id="main" class="auditorium.Level">
+        
+        <property name="name" value="main"/>
+        <property name="levelId" value="2"/>
+        <property name="numRows" value="20"/>
+        <property name="numSeatsPerRow" value="100"/>
+        <property name="pricePerTicket" value="75"/>
+        
+    </bean>
+    
+    <bean id="level1" class="auditorium.Level">
+        
+        <property name="name" value="level1"/>
+        <property name="levelId" value="3"/>
+        <property name="numRows" value="15"/>
+        <property name="numSeatsPerRow" value="100"/>
+        <property name="pricePerTicket" value="50"/>
+        
+    </bean>
+    
+    <bean id="level2" class="auditorium.Level">
+        
+        <property name="name" value="level2"/>
+        <property name="levelId" value="4"/>
+        <property name="numRows" value="15"/>
+        <property name="numSeatsPerRow" value="100"/>
+        <property name="pricePerTicket" value="40"/>
+        
+    </bean>
+    
+    
+
+</beans>
